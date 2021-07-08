@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { updateDegree, resetDegree } from "../actions/updateDegree";
 import { appendCourse, deleteCourse } from "../actions/updateCourses";

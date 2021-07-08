@@ -8,6 +8,7 @@ import { RightOutlined } from "@ant-design/icons";
 import axios from "axios";
 import OptionsDrawer from "./OptionsDrawer";
 import SkeletonPlanner from "./SkeletonPlanner";
+import { useSelector } from "react-redux";
 import "./main.less";
 
 const TermPlanner = () => {
@@ -20,16 +21,19 @@ const TermPlanner = () => {
     const res = await axios.get("data.json");
     setData(res.data);
     setYears(res.data.years);
-    setUnplanned(createUnplannedTypes(res.data));
+    //     setUnplanned(createUnplannedTypes(res.data));
     setIsLoading(false);
     isAllEmpty(years) && openNotification();
   };
-
+  const user = useSelector((state) => state.user);
+  const courses = useSelector((state) => state.updateCourses.courses);
   useEffect(() => {
     setTimeout(fetchCourses, 1000); // testing skeleton
+    setUnplanned(createUnplannedTypes(user.unplanned, courses));
     //     fetchCourses();
   }, []);
-
+  console.log(unplanned);
+  console.log(courses);
   const handleOnDragEnd = (result) => {
     setIsDragging(false);
 
@@ -175,11 +179,11 @@ const openNotification = () => {
 
 // create separate array for each type
 // e.g. courseTypes = { Core: ["COMP1511", "COMP2521"], Elective: ["COMP6881"] }
-const createUnplannedTypes = (data) => {
-  if (data["unplanned"] == null) return {};
+const createUnplannedTypes = (unplanned, courses) => {
+  if (unplanned.length === 0) return {};
   let courseTypes = {};
-  data["unplanned"].forEach((code) => {
-    const type = data["courses"][code]["type"];
+  unplanned.forEach((code) => {
+    const type = courses[code]["type"];
     if (!courseTypes.hasOwnProperty(type)) {
       courseTypes[type] = [code];
     } else {
