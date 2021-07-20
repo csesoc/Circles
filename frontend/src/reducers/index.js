@@ -1,11 +1,17 @@
 import { combineReducers } from "redux";
 import themeReducer from "./themeReducer";
-import updateCourses from "./updateCourses";
+import degreeReducer from "./degreeReducer";
 import userReducer from "./userReducer";
+import plannerReducer from './plannerReducer';
+import courseOptionsReducer from "./courseOptionsReducer";
+
 const allReducers = combineReducers({
-  updateCourses: updateCourses,
+  planner: plannerReducer,
+  courseOptions: courseOptionsReducer,
+  degree: degreeReducer,
   user: userReducer,
   theme: themeReducer,
 });
+
 
 export default allReducers;
